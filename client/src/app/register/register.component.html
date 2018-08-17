@@ -1,0 +1,101 @@
+
+
+<div class="row justify-content-center" >
+  
+  <div class="col-6">
+    <h2>Registration Form</h2>
+    <hr>
+    <div [ngClass]="msgClass" role="alert" *ngIf="notif">
+      {{ msg }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <form [formGroup]="myForm" (submit)="onRegisterSubmit()">
+      <div class="form-group">
+        <label for="uname">Username</label>
+        <input type="text" 
+        class="form-control" 
+        id="uname" name="uname"  
+        placeholder="Enter Username" 
+        formControlName="uname"
+        [ngClass]='{"border border-danger": (myForm.controls.uname.errors && myForm.controls.uname.dirty) || (isValidUname && myForm.controls.uname.dirty)}'
+        (blur)="checkUsername()" />
+        <ul>
+          <li class="text-danger" *ngIf='myForm.controls.uname.errors?.required && myForm.controls.uname.dirty'>
+            Username Required.
+          </li>
+          <li class="text-danger" *ngIf='(myForm.controls.uname.errors?.minlength || myForm.controls.uname.errors?.maxlength) && myForm.controls.uname.dirty'>
+            Minimun 3 characters and Maximum 15 characters
+          </li>
+          <li class="text-danger" *ngIf="myForm.controls.uname.errors?.validateUsername && myForm.controls.uname.dirty">
+            Username must not have any special characters
+          </li>
+          <li [ngClass]="isValidUnameClass" *ngIf="isValidUnameMsg">{{ isValidUnameMsg }}</li>
+        </ul>
+      </div>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" 
+        class="form-control" 
+        id="email" 
+        name="email" 
+        placeholder="Enter email" 
+        formControlName="email"
+        [ngClass]="{'border border-danger': (myForm.controls.email.errors && myForm.controls.email.dirty) || (isValidEmail && myForm.controls.email.dirty)}"
+        (blur)="checkEmail()" />
+        <ul>
+          <li class="text-danger" *ngIf='myForm.controls.email.errors?.required && myForm.controls.email.dirty'>
+            E-mail Required.
+          </li>
+          <li class="text-danger" *ngIf='(myForm.controls.email.errors?.minlength || myForm.controls.email.errors?.maxlength) && myForm.controls.email.dirty'>
+            Minimun 5 characters and Maximum 30 characters
+          </li>
+          <li class="text-danger" *ngIf="myForm.controls.email.errors?.validateEmail && myForm.controls.email.dirty">
+            E-Mail must be valid.
+          </li>
+          <li [ngClass]="isValidEmailClass" *ngIf="isValidEmailMsg">{{ isValidEmailMsg }}</li>
+        </ul>
+      </div>
+      <div class="form-group">
+        <label for="pass">Password</label>
+        <input type="password" 
+        class="form-control" 
+        id="pass" name="pass" 
+        placeholder="Password" 
+        formControlName="pass"
+        [ngClass]="{'border border-danger': (myForm.controls.pass.errors && myForm.controls.pass.dirty)}" />
+        <ul>
+          <li class="text-danger" *ngIf='myForm.controls.pass.errors?.required && myForm.controls.pass.dirty'>
+            Password Required.
+          </li>
+          <li class="text-danger" *ngIf='(myForm.controls.pass.errors?.minlength || myForm.controls.pass.errors?.maxlength) && myForm.controls.pass.dirty'>
+            Minimun 8 characters and Maximum 35 characters
+          </li>
+          <li class="text-danger" *ngIf="myForm.controls.pass.errors?.validatePassword && myForm.controls.pass.dirty">
+            Must have at least one uppercase, lowercase, special character and number.
+          </li>
+        </ul>
+      </div>
+      <div class="form-group">
+        <label for="cpass">Confirm Password</label>
+        <input type="password" 
+        class="form-control" 
+        id="cpass" name="cpass" 
+        placeholder="Confirm Password" 
+        formControlName="cpass"
+        [ngClass]="{'border border-danger': (myForm.controls.cpass.errors && myForm.controls.cpass.dirty)}" />
+        <ul>
+          <li class="text-danger" *ngIf='myForm.controls.cpass.errors?.required && myForm.controls.cpass.dirty'>
+            Confirm Password Required.
+          </li>
+          <li class="text-danger" *ngIf="myForm.errors?.matchingPasswords && myForm.controls.cpass.dirty">
+            Confirm password didn't matched to Password.
+          </li>
+        </ul>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="myForm.invalid || isValidUname || isValidEmail || processing">Submit</button>
+    </form>
+  </div>
+</div>
